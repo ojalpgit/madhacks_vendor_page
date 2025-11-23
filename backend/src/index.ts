@@ -12,7 +12,7 @@ import adminRoutes from './routes/admin';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const prisma = new PrismaClient();
 
 // Middleware
