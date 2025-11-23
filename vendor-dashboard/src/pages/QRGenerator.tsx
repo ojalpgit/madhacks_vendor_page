@@ -5,6 +5,7 @@ import { Product, CartItem, QRData } from '../types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Plus, Minus, QrCode, X } from 'lucide-react';
+import colors from '../utils/colors';
 
 export default function QRGenerator() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -117,31 +118,32 @@ export default function QRGenerator() {
   const { totalBTC, totalSbtc } = calculateTotal();
 
   return (
-    <div className="p-8">
+    <div className="p-8" style={{ backgroundColor: colors.background }}>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">QR Code Generator</h1>
-        <p className="text-gray-600 mt-2">Build a cart and generate a payment QR code</p>
+        <h1 className="text-3xl font-bold" style={{ color: colors.textDark }}>QR Code Generator</h1>
+        <p className="mt-2" style={{ color: colors.textLight }}>Build a cart and generate a payment QR code</p>
       </div>
 
       {showQR && qrData && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
+          <div className="rounded-lg p-8 max-w-md w-full relative" style={{ backgroundColor: colors.white }}>
             <button
               onClick={() => setShowQR(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              className="absolute top-4 right-4 hover:opacity-70 transition-opacity"
+              style={{ color: colors.textDark }}
             >
               <X size={24} />
             </button>
             <div className="text-center">
-              <h2 className="text-2xl font-bold mb-4">Payment QR Code</h2>
-              <div className="bg-white p-4 rounded-lg inline-block mb-4">
+              <h2 className="text-2xl font-bold mb-4" style={{ color: colors.primary }}>Payment QR Code</h2>
+              <div className="p-4 rounded-lg inline-block mb-4" style={{ backgroundColor: colors.white }}>
                 <QRCodeSVG value={JSON.stringify(qrData)} size={256} />
               </div>
-              <div className="text-lg font-medium text-gray-700">
+              <div className="text-lg font-medium" style={{ color: colors.textDark }}>
                 <div>{totalBTC.toFixed(8)} BTC</div>
-                <div className="text-gray-500">{sbtcFromBtc(totalBTC)} Sbtc</div>
+                <div style={{ color: colors.textLight }}>{sbtcFromBtc(totalBTC)} Sbtc</div>
               </div>
-              <p className="text-sm text-gray-500 mt-4">
+              <p className="text-sm mt-4" style={{ color: colors.textLight }}>
                 Customer scans this QR code to complete payment
               </p>
             </div>
@@ -150,39 +152,44 @@ export default function QRGenerator() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
+        <Card className="bg-white border" style={{ borderColor: colors.border }}>
           <CardHeader>
-            <CardTitle>Products</CardTitle>
-            <CardDescription>Add products to the cart</CardDescription>
+            <CardTitle style={{ color: colors.textDark }}>Products</CardTitle>
+            <CardDescription style={{ color: colors.textLight }}>Add products to the cart</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-opacity-50 transition-colors"
+                  style={{ borderColor: colors.border, backgroundColor: colors.background }}
                 >
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900">{product.name}</h3>
+                    <h3 className="font-medium" style={{ color: colors.textDark }}>{product.name}</h3>
                     {product.description && (
-                      <p className="text-sm text-gray-500">{product.description}</p>
+                      <p className="text-sm" style={{ color: colors.textLight }}>{product.description}</p>
                     )}
                     <div className="mt-1">
-                      <span className="font-medium text-blue-600">
+                      <span className="font-medium" style={{ color: colors.primary }}>
                         {product.priceBtc.toFixed(8)} BTC
                       </span>
-                      <span className="text-gray-500 ml-2">
+                      <span className="ml-2" style={{ color: colors.textLight }}>
                         ({sbtcFromBtc(product.priceBtc)} Sbtc)
                       </span>
                     </div>
                   </div>
-                  <Button size="sm" onClick={() => addToCart(product)}>
+                  <Button 
+                    size="sm" 
+                    onClick={() => addToCart(product)}
+                    style={{ backgroundColor: colors.accent, color: colors.white }}
+                  >
                     <Plus size={16} />
                   </Button>
                 </div>
               ))}
               {products.length === 0 && (
-                <p className="text-center text-gray-500 py-8">
+                <p className="text-center py-8" style={{ color: colors.textLight }}>
                   No products available. Add products first.
                 </p>
               )}
@@ -190,14 +197,14 @@ export default function QRGenerator() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white border" style={{ borderColor: colors.border }}>
           <CardHeader>
-            <CardTitle>Cart</CardTitle>
-            <CardDescription>Selected items for payment</CardDescription>
+            <CardTitle style={{ color: colors.textDark }}>Cart</CardTitle>
+            <CardDescription style={{ color: colors.textLight }}>Selected items for payment</CardDescription>
           </CardHeader>
           <CardContent>
             {cart.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">Cart is empty</p>
+              <p className="text-center py-8" style={{ color: colors.textLight }}>Cart is empty</p>
             ) : (
               <>
                 <div className="space-y-4 mb-6">
@@ -206,13 +213,14 @@ export default function QRGenerator() {
                     return (
                       <div
                         key={item.productId}
-                        className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                        style={{ borderColor: colors.border }}
                       >
                         <div className="flex-1">
-                          <h3 className="font-medium text-gray-900">
+                          <h3 className="font-medium" style={{ color: colors.textDark }}>
                             {product?.name || 'Unknown'}
                           </h3>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm" style={{ color: colors.textLight }}>
                             {item.priceBtc.toFixed(8)} BTC × {item.quantity}
                           </div>
                         </div>
@@ -221,14 +229,16 @@ export default function QRGenerator() {
                             size="sm"
                             variant="outline"
                             onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                            style={{ borderColor: colors.border, color: colors.textDark }}
                           >
                             <Minus size={16} />
                           </Button>
-                          <span className="w-8 text-center">{item.quantity}</span>
+                          <span className="w-8 text-center" style={{ color: colors.textDark }}>{item.quantity}</span>
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                            style={{ borderColor: colors.border, color: colors.textDark }}
                           >
                             <Plus size={16} />
                           </Button>
@@ -237,18 +247,22 @@ export default function QRGenerator() {
                     );
                   })}
                 </div>
-                <div className="border-t border-gray-200 pt-4 mb-4">
+                <div className="border-t pt-4 mb-4" style={{ borderColor: colors.border }}>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium text-gray-700">Total:</span>
+                    <span className="font-medium" style={{ color: colors.textDark }}>Total:</span>
                     <div className="text-right">
-                      <div className="text-xl font-bold text-blue-600">
+                      <div className="text-xl font-bold" style={{ color: colors.primary }}>
                         {totalBTC.toFixed(8)} BTC
                       </div>
-                      <div className="text-gray-600">{sbtcFromBtc(totalBTC)} Sbtc</div>
+                      <div style={{ color: colors.textLight }}>{sbtcFromBtc(totalBTC)} Sbtc</div>
                     </div>
                   </div>
                 </div>
-                <Button className="w-full" onClick={generateQR}>
+                <Button 
+                  className="w-full" 
+                  onClick={generateQR}
+                  style={{ backgroundColor: colors.accent, color: colors.white }}
+                >
                   <QrCode size={20} className="mr-2" />
                   Generate QR Code
                 </Button>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
+import colors from '../utils/colors';
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -85,18 +86,18 @@ export default function Products() {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <div className="text-center">Loading...</div>
+      <div className="p-8" style={{ backgroundColor: colors.background }}>
+        <div className="text-center" style={{ color: colors.textDark }}>Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8" style={{ backgroundColor: colors.background }}>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
-          <p className="text-gray-600 mt-2">Manage your product catalog</p>
+          <h1 className="text-3xl font-bold" style={{ color: colors.textDark }}>Products</h1>
+          <p className="mt-2" style={{ color: colors.textLight }}>Manage your product catalog</p>
         </div>
         <Button
           onClick={() => {
@@ -104,6 +105,7 @@ export default function Products() {
             setFormData({ name: '', description: '', priceBtc: '', imageUrl: '' });
             setShowModal(true);
           }}
+          style={{ backgroundColor: colors.accent, color: colors.white }}
         >
           <Plus size={20} className="mr-2" />
           Add Product
@@ -112,7 +114,11 @@ export default function Products() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <Card key={product.id} className="hover:shadow-lg transition-shadow">
+          <Card 
+            key={product.id} 
+            className="hover:shadow-lg transition-shadow bg-white border"
+            style={{ borderColor: colors.border }}
+          >
             {product.imageUrl && (
               <img
                 src={product.imageUrl}
@@ -121,17 +127,17 @@ export default function Products() {
               />
             )}
             <CardHeader>
-              <CardTitle className="text-xl">{product.name}</CardTitle>
+              <CardTitle className="text-xl" style={{ color: colors.textDark }}>{product.name}</CardTitle>
               {product.description && (
-                <CardDescription>{product.description}</CardDescription>
+                <CardDescription style={{ color: colors.textLight }}>{product.description}</CardDescription>
               )}
             </CardHeader>
             <CardContent>
               <div className="mb-4">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-2xl font-bold" style={{ color: colors.primary }}>
                   {product.priceBtc.toFixed(8)} BTC
                 </div>
-                <div className="text-lg text-gray-600">
+                <div className="text-lg" style={{ color: colors.textLight }}>
                   {sbtcFromBtc(product.priceBtc)} Sbtc
                 </div>
               </div>
@@ -141,6 +147,7 @@ export default function Products() {
                   size="sm"
                   onClick={() => handleEdit(product)}
                   className="flex-1"
+                  style={{ borderColor: colors.border, color: colors.textDark }}
                 >
                   <Edit2 size={16} className="mr-2" />
                   Edit
@@ -150,6 +157,7 @@ export default function Products() {
                   size="sm"
                   onClick={() => handleDelete(product.id)}
                   className="flex-1"
+                  style={{ backgroundColor: colors.error, color: colors.white }}
                 >
                   <Trash2 size={16} className="mr-2" />
                   Delete
@@ -161,23 +169,25 @@ export default function Products() {
       </div>
 
       {products.length === 0 && (
-        <Card className="text-center py-12">
+        <Card className="text-center py-12 bg-white border" style={{ borderColor: colors.border }}>
           <CardContent>
-            <p className="text-gray-500">No products yet. Add your first product!</p>
+            <p style={{ color: colors.textLight }}>No products yet. Add your first product!</p>
           </CardContent>
         </Card>
       )}
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md">
+          <Card className="w-full max-w-md bg-white border" style={{ borderColor: colors.border }}>
             <CardHeader>
-              <CardTitle>{editingProduct ? 'Edit Product' : 'Add Product'}</CardTitle>
+              <CardTitle style={{ color: colors.primary }}>
+                {editingProduct ? 'Edit Product' : 'Add Product'}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                     Name *
                   </label>
                   <Input
@@ -188,7 +198,7 @@ export default function Products() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                     Description
                   </label>
                   <Input
@@ -198,7 +208,7 @@ export default function Products() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                     Price (BTC) *
                   </label>
                   <Input
@@ -211,7 +221,7 @@ export default function Products() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                     Image URL
                   </label>
                   <Input
@@ -230,10 +240,15 @@ export default function Products() {
                       setShowModal(false);
                       setEditingProduct(null);
                     }}
+                    style={{ borderColor: colors.border, color: colors.textDark }}
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" className="flex-1">
+                  <Button 
+                    type="submit" 
+                    className="flex-1"
+                    style={{ backgroundColor: colors.accent, color: colors.white }}
+                  >
                     {editingProduct ? 'Update' : 'Create'}
                   </Button>
                 </div>

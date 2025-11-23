@@ -5,6 +5,7 @@ import { User } from '../types';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
+import colors from '../utils/colors';
 
 interface SignupProps {
   setUser: (user: User) => void;
@@ -44,23 +45,25 @@ export default function Signup({ setUser }: SignupProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
-      <Card className="w-full max-w-md shadow-xl">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: colors.background }}>
+      <Card className="w-full max-w-md shadow-lg" style={{ backgroundColor: colors.white, borderColor: colors.border }}>
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl font-bold" style={{ color: colors.primary }}>
             Create Account
           </CardTitle>
-          <CardDescription className="text-lg">Vendor Dashboard</CardDescription>
+          <CardDescription className="text-lg" style={{ color: colors.textLight }}>
+            Vendor Dashboard
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+              <div className="p-3 rounded-md text-sm" style={{ backgroundColor: `${colors.error}20`, borderColor: colors.error, color: colors.error }}>
                 {error}
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                 Name
               </label>
               <Input
@@ -72,7 +75,7 @@ export default function Signup({ setUser }: SignupProps) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                 Email
               </label>
               <Input
@@ -84,7 +87,7 @@ export default function Signup({ setUser }: SignupProps) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textDark }}>
                 Password
               </label>
               <Input
@@ -96,12 +99,12 @@ export default function Signup({ setUser }: SignupProps) {
                 minLength={6}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full" disabled={loading} style={{ backgroundColor: colors.accent, color: colors.white }}>
               {loading ? 'Creating account...' : 'Sign Up'}
             </Button>
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm" style={{ color: colors.textLight }}>
               Already have an account?{' '}
-              <Link to="/login" className="text-blue-600 hover:underline">
+              <Link to="/login" style={{ color: colors.primary }} className="hover:underline">
                 Login
               </Link>
             </p>

@@ -1,7 +1,7 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { User } from '../types';
-import { LayoutDashboard, Package, QrCode, History, LogOut } from 'lucide-react';
-import Button from './ui/Button';
+import { LayoutDashboard, Package, QrCode, History, LogOut, Settings } from 'lucide-react';
+import colors from '../utils/colors';
 
 interface LayoutProps {
   user: User;
@@ -20,36 +20,53 @@ export default function Layout({ user, setUser }: LayoutProps) {
   };
 
   const navItems = [
-    { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
     { path: '/products', icon: Package, label: 'Products' },
     { path: '/qr-generator', icon: QrCode, label: 'QR Generator' },
     { path: '/transactions', icon: History, label: 'Transactions' },
   ];
 
+  // Get user initials for avatar
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
       <div className="flex h-screen">
         {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-          <div className="p-6 border-b border-gray-200">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-              Bitcoin POS
+        <aside className="w-64 bg-white border-r flex flex-col" style={{ borderColor: colors.border }}>
+          {/* Logo */}
+          <div className="p-6 border-b" style={{ borderColor: colors.border }}>
+            <h1 className="text-2xl font-bold" style={{ color: colors.primary }}>
+              Bitcoin Transaction
             </h1>
-            <p className="text-sm text-gray-500 mt-1">Vendor Dashboard</p>
           </div>
-          <nav className="flex-1 p-4 space-y-2">
+
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.path;
+              const isActive = location.pathname === item.path || 
+                             (item.path === '/dashboard' && location.pathname === '/');
               return (
                 <button
                   key={item.path}
                   onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-blue-50 text-blue-700 font-medium'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'font-medium'
+                      : 'hover:bg-opacity-50'
                   }`}
+                  style={{
+                    backgroundColor: isActive ? colors.primary : 'transparent',
+                    color: isActive ? colors.white : colors.textDark,
+                  }}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
@@ -57,24 +74,54 @@ export default function Layout({ user, setUser }: LayoutProps) {
               );
             })}
           </nav>
-          <div className="p-4 border-t border-gray-200">
-            <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-              <p className="text-sm font-medium text-gray-900">{user.name}</p>
-              <p className="text-xs text-gray-500">{user.email}</p>
+
+          {/* User Profile Section */}
+          <div className="p-4 border-t" style={{ borderColor: colors.border }}>
+            <div className="flex items-center gap-3 mb-4 p-3 rounded-lg" style={{ backgroundColor: colors.background }}>
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium text-white"
+                style={{ backgroundColor: colors.primary }}
+              >
+                {getInitials(user.name)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate" style={{ color: colors.textDark }}>
+                  {user.name}
+                </p>
+                <p className="text-xs truncate" style={{ color: colors.textLight }}>
+                  {user.email}
+                </p>
+              </div>
             </div>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleLogout}
+            
+            <button
+              onClick={() => navigate('/settings')}
+              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-opacity-50 transition-colors mb-2"
+              style={{ 
+                color: colors.textDark,
+                backgroundColor: 'transparent'
+              }}
             >
-              <LogOut size={16} className="mr-2" />
-              Logout
-            </Button>
+              <Settings size={18} />
+              <span className="text-sm">Settings</span>
+            </button>
+            
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-opacity-50 transition-colors"
+              style={{ 
+                color: colors.textDark,
+                backgroundColor: 'transparent'
+              }}
+            >
+              <LogOut size={18} />
+              <span className="text-sm">Log out</span>
+            </button>
           </div>
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto" style={{ backgroundColor: colors.background }}>
           <Outlet />
         </main>
       </div>

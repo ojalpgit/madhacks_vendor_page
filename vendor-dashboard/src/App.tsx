@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import QRGenerator from './pages/QRGenerator';
 import Transactions from './pages/Transactions';
+import Settings from './pages/Settings';
 import Layout from './components/Layout';
 import { User } from './types';
 
@@ -49,6 +50,7 @@ function App() {
           <Route path="products" element={<Products />} />
           <Route path="qr-generator" element={<QRGenerator />} />
           <Route path="transactions" element={<Transactions />} />
+          <Route path="settings" element={<Settings user={user} setUser={setUser} />} />
         </Route>
       </Routes>
     </BrowserRouter>
