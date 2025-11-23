@@ -1,0 +1,5 @@
+DATABASE_URL="postgresql://postgres.cxgfmxrpdvaxysahgupz:PiQ73Zi7Nwmk.!J@aws-1-us-east-1.pooler.supabase.com:5432/postgres?pgbouncer=true&connection_limit=1"
+
+JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
+PORT=3001
+NODE_ENV=development
