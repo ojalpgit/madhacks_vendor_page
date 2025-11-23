@@ -1,0 +1,20 @@
+# GitHub workflow for demo (optional)
+name: Demo
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check project structure
+        run: |
+          echo "✅ Bitcoin POS System"
+          echo "📁 Backend: Node.js + SQLite"
+          echo "📁 Vendor Dashboard: React + Vite"
+          echo "📁 Customer App: React Native + Expo"

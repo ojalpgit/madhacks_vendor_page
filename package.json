@@ -1,0 +1,24 @@
+{
+  "name": "bitcoin-pos-monorepo",
+  "version": "1.0.0",
+  "description": "Bitcoin POS system monorepo - Customer app, Vendor dashboard, and Backend",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "customer-app",
+    "vendor-dashboard"
+  ],
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:vendor": "cd vendor-dashboard && npm run dev",
+    "dev:customer": "cd customer-app && npm start",
+    "build:backend": "cd backend && npm run build",
+    "build:vendor": "cd vendor-dashboard && npm run build",
+    "docker:up": "cd backend && docker-compose up -d",
+    "docker:down": "cd backend && docker-compose down"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
